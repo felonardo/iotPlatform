@@ -14,7 +14,13 @@ dotenv.load();
 
 var app = express();
 
-
+app.use(cookieParser())
+app.use(session({
+  resave:true,
+  saveUninitialized:true,
+  secret:process.env.secret,
+  cookie:{maxAge:3600000*24}
+}))
 // const { Role } = require('./models/Role.entity');
 
 //adminJS Builder
