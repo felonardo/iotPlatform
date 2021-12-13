@@ -39,7 +39,7 @@ const config = {
   auth0Logout: true,
   clientSecret: process.env.CLIENTSECRET,
   secret: 'LONG_RANDOM_STRING',
-  baseURL = `${host}:${port}`,
+  baseURL: `${host}:${port}`,
   authorizationParams: {
     response_type: 'code',
     audience: `${host}:5000`,
