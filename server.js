@@ -50,20 +50,21 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+const host = process.env.HOST;
 const config = {
   authRequired: false,
   auth0Logout: true,
   clientSecret: process.env.CLIENTSECRET,
   authorizationParams: {
     response_type: 'code',
-    audience: "http://localhost:5000",
+    audience: "${host}:5000",
     scope: 'openid profile email'
   }
 };
 
 const port = process.env.PORT || 3000;
 if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
-  config.baseURL = `http://143.244.150.6:${port}`;
+  config.baseURL = `${host}:${port}`;
 }
 
 app.use(auth(config));
