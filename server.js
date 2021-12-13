@@ -14,16 +14,8 @@ dotenv.load();
 
 var app = express();
 
-var session = require('express-session');
-
-app.use(session({
-    resave: false,
-    saveUninitialized: true,
-    secret: 'secrethere'
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
+var app = express();
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 // const { Role } = require('./models/Role.entity');
 
 //adminJS Builder
