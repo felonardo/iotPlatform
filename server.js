@@ -14,33 +14,15 @@ dotenv.load();
 
 var app = express();
 
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-// const { Role } = require('./models/Role.entity');
+// app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+const session = require('express-session');	//To Acquire it
 
-//adminJS Builder
-
-  // Passing resources by giving entire database
-  // adminJs = new AdminJS({
-  //   databases: [mongooseDb],
-  //   resources: [Role],
-  //   //... other AdminJSOptions
-  // })
-
-  // Passing resources one by one,
-  // also with an additional options for admin resource
-  // adminJs = new AdminJS({
-  //   resources: [User, {
-  //     resource: Admin,
-  //     options: {
-  //       //...
-  //     },
-  //   }],
-  // })
-
-
-
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'ejs');
+app.use(session({ 		//Usuage
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
