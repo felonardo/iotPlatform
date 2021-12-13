@@ -14,7 +14,6 @@ dotenv.load();
 
 var app = express();
 
-var app = express();
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 // const { Role } = require('./models/Role.entity');
 
