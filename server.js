@@ -15,14 +15,14 @@ dotenv.load();
 var app = express();
 
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-const session = require('express-session');	//To Acquire it
+// const session = require('express-session');	//To Acquire it
 
-app.use(session({ 		//Usuage
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
+// app.use(session({ 		//Usuage
+//   secret: 'keyboard cat',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: true }
+// }));
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
@@ -37,6 +37,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   clientSecret: process.env.CLIENTSECRET,
+  secret: 'LONG_RANDOM_STRING',
   authorizationParams: {
     response_type: 'code',
     audience: `${host}:5000`,
