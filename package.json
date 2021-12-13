@@ -20,6 +20,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-formidable": "^1.2.0",
     "express-openid-connect": "^2.0.0",
+    "express-session": "^1.17.2",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "react-chartjs-2": "^4.0.0",
