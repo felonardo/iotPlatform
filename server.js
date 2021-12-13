@@ -32,12 +32,14 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+const port = process.env.PORT || 3000;
 const host = process.env.HOST;
 const config = {
   authRequired: false,
   auth0Logout: true,
   clientSecret: process.env.CLIENTSECRET,
   secret: 'LONG_RANDOM_STRING',
+  baseURL = `${host}:${port}`,
   authorizationParams: {
     response_type: 'code',
     audience: `${host}:5000`,
@@ -46,10 +48,10 @@ const config = {
   }
 };
 
-const port = process.env.PORT || 3000;
-if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
-  config.baseURL = `${host}:${port}`;
-}
+// const port = process.env.PORT || 3000;
+// if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
+//   config.baseURL = `${host}:${port}`;
+// }
 
 app.use(auth(config));
 
