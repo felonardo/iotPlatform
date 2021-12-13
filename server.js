@@ -40,6 +40,7 @@ const config = {
   clientSecret: process.env.CLIENTSECRET,
   secret: 'LONG_RANDOM_STRING',
   baseURL: `${host}:${port}`,
+  clientID: process.env.CLIENT_ID,
   authorizationParams: {
     response_type: 'code',
     audience: `${host}:5000`,
