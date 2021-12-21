@@ -53,10 +53,13 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
     .then(function (response) {
       console.log("lala",response);
       console.log(JSON.stringify(response.data));
+
+      res.status(200).json(response.data);
     })
     .catch(function (error) {
       console.log("lilia",error);
       console.log(error);
+      res.status(404).json({message: error.message});
     });
 
 
