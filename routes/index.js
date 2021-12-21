@@ -31,14 +31,14 @@ function initMap() {
 
 
 router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
-  console.log('Got body:', req.body);
+  console.log('Got body:', req.headers.authorization);
   var data = qs.stringify({
     'data': req.body
   });
 
   // const access_token = req.oidc.accessToken.access_token
   // const token_type = req.oidc.accessToken.token_type
-  console.log(access_token)
+  // console.log(access_token)
 
   var config = {
     method: 'post',
