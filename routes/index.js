@@ -52,7 +52,7 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
     axios(config)
     .then(function (response) {
       console.log("lala",response);
-      // console.log(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data));
     })
     .catch(function (error) {
       console.log("lilia",error);
