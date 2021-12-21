@@ -1,4 +1,5 @@
 var router = require('express').Router();
+const dotenv = require('dotenv');
 const { requiresAuth } = require('express-openid-connect');
 const axios = require('axios');
 var qs = require('qs');
@@ -8,6 +9,9 @@ var bodyParser = require('body-parser');
 // let io = app.get("io")
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+dotenv.load();
+
+const host = process.env.HOST;
 
 router.get('/', function (req, res, next) {
   
@@ -34,13 +38,13 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
   const access_token = req.oidc.accessToken.access_token
   const token_type = req.oidc.accessToken.token_type
   console.log(req.oidc)
-  var str = req.params.id + "/" + req.params.name
+  var str = `${host}:5000/` + req.params.id + "/" + req.params.name
   console.log(str)
 
   // setInterval(function(){ 
 
     try {
-      const apiResponse = await axios.get('http://localhost:5000/'+str, 
+      const apiResponse = await axios.get(str, 
       {
       // params: {
       //   userId: req.oidc.user.nickname
@@ -90,7 +94,7 @@ router.get('/applications', requiresAuth(), urlencodedParser, async (req, res) =
   console.log(req.oidc)
 
   try {
-    const apiResponse = await axios.get('http://localhost:5000/applications', 
+    const apiResponse = await axios.get(`${host}:5000/applications`, 
     {
     // params: {
     //   userId: req.oidc.user.nickname
