@@ -1,14 +1,16 @@
 var router = require('express').Router();
 const { requiresAuth } = require('express-openid-connect');
-const axios = require('axios')
+const axios = require('axios');
 var qs = require('qs');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
+// var io = require('../server')()
+// let io = app.get("io")
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.get('/', function (req, res, next) {
-  let map;
 
+router.get('/', function (req, res, next) {
+  
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: -34.397, lng: 150.644 },
@@ -23,8 +25,51 @@ function initMap() {
   })
 });
 
-router.get('/applications/:id/device/:name', requiresAuth(), function(req , res){
+
+
+router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, async(req , res) => {
   
+  let datas = {}
+
+  const access_token = req.oidc.accessToken.access_token
+  const token_type = req.oidc.accessToken.token_type
+  console.log(req.oidc)
+  var str = req.params.id + "/" + req.params.name
+  console.log(str)
+
+  // setInterval(function(){ 
+
+    try {
+      const apiResponse = await axios.get('http://localhost:5000/'+str, 
+      {
+      // params: {
+      //   userId: req.oidc.user.nickname
+      // },
+      headers: { 
+        'Authorization': `${token_type} ${access_token}`, 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      })
+
+
+      datas = apiResponse.data[0].datas    
+
+      console.log(JSON.stringify(datas));
+      // console.log("lala:", datas)
+   
+    } catch(e) { }
+
+  // },2000)
+
+  
+  io.on('connection', function (socket) {
+    // console.log("rs1:", JSON.stringify(datas));
+    console.log(req.params.name)
+    socket.emit(req.params.name, datas);
+  
+  
+  });
+
     res.render('device', {
       isAuthenticated: req.oidc.isAuthenticated(),
       user: req.oidc.user,
@@ -32,7 +77,7 @@ router.get('/applications/:id/device/:name', requiresAuth(), function(req , res)
       deviceName: req.params.name,
       // tokenType: token_type,
       // accessToken: access_token,
-      // datas
+      datas
       });
     });
 
@@ -292,5 +337,6 @@ router.get('/secured', requiresAuth(), function (req, res, next) {
     user: req.oidc.user,
   });
 });
+
 
 module.exports = router;

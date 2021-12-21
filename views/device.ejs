@@ -35,6 +35,9 @@
           </div>
           <div class="card-body border-1">
             <h5 class="mb-0">URI Device: https://localhost:5000/<%= appId %>/<%= deviceName %></h5>
+            <div class="vote-result-wrapper">
+              <canvas id="vote-result"></canvas>
+           </div>
           </div>
           <!-- Light table -->
           <div class="table-responsive">
@@ -42,45 +45,31 @@
               <thead class="thead-light">
                 <tr>
                   <th scope="col" class="sort" data-sort="name">Time</th>
-                  <th scope="col" class="sort" data-sort="name">Resource Index(ri)</th>
                   <th scope="col" class="sort" data-sort="name">Data</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody class="list">
-                <!-- <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
-                      </div>
-                    </div>
-                  </th>
-                </tr>
+                <% for(var i=0; i < datas.length; i++) { %>
                
                 <tr>
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">Vue Paper UI Kit PRO</span>
+                        <span class="name mb-0 text-sm"><%= Date(datas[i].timestamp) %></span>
                       </div>
                     </div>
                   </th>                 
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
+                        <span class="name mb-0 text-sm"><%= JSON.stringify(datas[i].data);%></span>
                       </div>
                     </div>
                   </th>
-                </tr> -->
+                </tr>
+
+          <% } %>
               </tbody>
             </table>
           </div>
@@ -116,3 +105,52 @@
     <!-- Dark table -->
     
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+  
+  <script>
+  // Setting socket
+  var socket = io();
+  var data;
+  var myChart;
+  var context;
+  var deviceName = '<%- deviceName %>'
+  
+  socket.on(deviceName, function (response) {
+  
+     var i = 0;
+  
+      for (var key in response) {
+        data.labels[i] = new Date(response[i].timestamp).toLocaleTimeString();
+        data.datasets[0].data[i] = Object.values(response[i].data)[0];
+        i++;
+     }
+
+     
+      // Update chart
+     myChart.update(); 
+  });
+  
+  // Chart Data
+  data = {
+     labels: [],
+     datasets: [
+          {
+              label: [],
+              data: [],
+          }
+      ]
+  };
+  
+  context = document.getElementById('vote-result').getContext('2d');
+  myChart = new Chart(context,{
+     type: 'bar',
+     data: data,
+     animation:{ 
+        animateScale:true
+     }
+  });
+  
+  </script>

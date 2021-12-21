@@ -24,7 +24,8 @@
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "react-chartjs-2": "^4.0.0",
-    "recharts": "^2.1.6"
+    "recharts": "^2.1.6",
+    "socket.io": "^4.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

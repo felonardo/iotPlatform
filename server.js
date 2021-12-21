@@ -13,6 +13,20 @@ const { auth } = require('express-openid-connect');
 dotenv.load();
 
 var app = express();
+var server = http.createServer(app)
+
+var io       = require('socket.io')(server,{
+	cors: {
+			origin: "http://localhost:3000",
+			methods: ["GET", "POST"],
+			credentials: true,
+			transports: ['websocket', 'polling'],
+	},
+	allowEIO3: true
+	}) 
+  // app.set("io",io);
+
+  global.io = io
 
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 // const session = require('express-session');	//To Acquire it
@@ -23,6 +37,12 @@ var app = express();
 //   saveUninitialized: true,
 //   cookie: { secure: true }
 // }));
+
+router.use(function(req,res,next){
+	req.io = io;
+	next();
+});
+
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
@@ -77,9 +97,17 @@ app.use(function (err, req, res, next) {
   res.render('error', {
     message: err.message,
     error: process.env.NODE_ENV !== 'production' ? err : {}
-  });å
+  });
 });
 
 
+// io.on('connection', function (socket) {
+//   console.log("rs1:",datas);
+//   socket.emit('vote', datas);
 
-module.exports = app;
+
+// });
+
+server.listen(3000);
+
+module.exports = app, server, io;
