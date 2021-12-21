@@ -32,9 +32,9 @@ function initMap() {
 
 router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   console.log('Got body:', req.headers.authorization);
-  var data = qs.stringify({
-    'data': req.body
-  });
+  // var data = qs.stringify({
+  //   'data': req.body
+  // });
 
   // const access_token = req.oidc.accessToken.access_token
   // const token_type = req.oidc.accessToken.token_type
@@ -47,13 +47,21 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
       'Authorization': req.headers.authorization, 
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    data : data
+    data : req.body
   };
     axios(config)
     .then(function (response) {
       console.log("lala",response);
       console.log(JSON.stringify(response.data));
 
+
+  io.on('connection', function (socket) {
+    console.log("rs1:", JSON.stringify(response.data));
+    console.log(req.params.name)
+    socket.emit(req.params.name, response.data);
+  
+  
+  });
       res.status(200).json(response.data[0]);
     })
     .catch(function (error) {
@@ -64,13 +72,6 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
 
 
   
-  io.on('connection', function (socket) {
-    console.log("rs1:", JSON.stringify(data));
-    console.log(req.params.name)
-    socket.emit(req.params.name, data);
-  
-  
-  });
   // console.log("rs1:", data);
   // res.json(data);
   // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
