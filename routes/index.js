@@ -30,7 +30,7 @@ function initMap() {
 });
 
 
-router.post('/applications/:id/device/:name', requiresAuth(), urlencodedParser, (req, res) => {
+router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   console.log('Got body:', req.body);
   var data = qs.stringify({
     'data': req.body
