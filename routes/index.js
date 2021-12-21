@@ -30,6 +30,48 @@ function initMap() {
 });
 
 
+router.post('/applications/:id/device/:name', requiresAuth(), urlencodedParser, (req, res) => {
+  console.log('Got body:', req.body);
+  var data = qs.stringify({
+    'data': req.body
+  });
+
+  const access_token = req.oidc.accessToken.access_token
+  const token_type = req.oidc.accessToken.token_type
+  console.log(access_token)
+
+  var config = {
+    method: 'post',
+    url: `${host}:5000/applications/:id/device/:name`,
+    headers: { 
+      'Authorization': `${token_type} ${access_token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data : data
+  };
+    axios(config)
+    .then(function (response) {
+      console.log("lala",response);
+      // console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log("lilia",error);
+      console.log(error);
+    });
+
+
+  
+  io.on('connection', function (socket) {
+    console.log("rs1:", JSON.stringify(datas));
+    console.log(req.params.name)
+    socket.emit(req.params.name, datas);
+  
+  
+  });
+
+  res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
+});
+
 
 router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, async(req , res) => {
   
