@@ -54,7 +54,7 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
       console.log("lala",response);
       console.log(JSON.stringify(response.data));
 
-      res.status(200).json(response.data);
+      res.status(200).json(response.data[0]);
     })
     .catch(function (error) {
       console.log("lilia",error);
@@ -71,8 +71,8 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   
   
   });
-  console.log("rs1:", data);
-  res.json(data);
+  // console.log("rs1:", data);
+  // res.json(data);
   // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
