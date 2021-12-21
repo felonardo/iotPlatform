@@ -62,14 +62,15 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
 
   
   io.on('connection', function (socket) {
-    console.log("rs1:", JSON.stringify(datas));
+    console.log("rs1:", JSON.stringify(data));
     console.log(req.params.name)
-    socket.emit(req.params.name, datas);
+    socket.emit(req.params.name, data);
   
   
   });
-
-  res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
+  console.log("rs1:", data);
+  res.json(data);
+  // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
 
