@@ -42,7 +42,7 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
 
   var config = {
     method: 'post',
-    url: `${host}:5000/:id/:name`,
+    url: `${host}:5000/`+ req.params.id + "/" + req.params.name,
     headers: { 
       'Authorization': `${token_type} ${access_token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'
