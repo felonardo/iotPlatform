@@ -71,8 +71,8 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   
   
   });
-  // console.log("rs1:", data);
-  // res.json(data);
+  console.log("rs1:", data);
+  res.json(data);
   // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
