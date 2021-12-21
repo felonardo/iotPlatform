@@ -140,7 +140,7 @@ router.get('/applications/:id', requiresAuth(), async (req, res) =>{
   console.log(access_token)
 
   try {
-    const apiResponse = await axios.get(`http://localhost:5000/devices/${req.params.id}`,
+    const apiResponse = await axios.get(`${host}:5000/devices/${req.params.id}`,
     {
       headers: {
         authorization: `${token_type} ${access_token}`
@@ -169,7 +169,7 @@ router.post('/applications/:id/add-device', requiresAuth(), urlencodedParser, (r
     'deviceName': req.body.deviceName,
     'userName': req.oidc.user.nickname, 
     'userEmail': req.oidc.user.email,  
-    'userId': req.oidc.user.sub, 
+    'userId': req.oidc.user.email, 
   });
 
   const access_token = req.oidc.accessToken.access_token
@@ -178,7 +178,7 @@ router.post('/applications/:id/add-device', requiresAuth(), urlencodedParser, (r
 
   var config = {
     method: 'post',
-    url: 'http://localhost:5000/devices',
+    url: `${host}:5000/devices`,
     headers: { 
       'Authorization': `${token_type} ${access_token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -202,7 +202,7 @@ router.post('/applications/add-application', requiresAuth(), urlencodedParser, (
   var data = qs.stringify({
     'appId': req.body.appId,
     'appName': req.body.appName,
-    'userId': req.oidc.user.sub, 
+    'userId': req.oidc.user.email, 
     'userName': req.oidc.user.nickname, 
     'userEmail': req.oidc.user.email, 
   });
@@ -213,7 +213,7 @@ router.post('/applications/add-application', requiresAuth(), urlencodedParser, (
 
   var config = {
     method: 'post',
-    url: 'http://localhost:5000/applications',
+    url: `${host}:5000/applications`,
     headers: { 
       'Authorization': `${token_type} ${access_token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -249,7 +249,7 @@ router.post('/applications/:id/add-user', requiresAuth(), urlencodedParser, (req
 
   var config = {
     method: 'post',
-    url: 'http://localhost:5000/applications/:id/adduser',
+    url: `${host}:5000/applications/:id/adduser`,
     headers: { 
       'Authorization': `${token_type} ${access_token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -278,7 +278,7 @@ router.get('/applications/:id/useraccess', urlencodedParser, requiresAuth(), asy
   try {
 
     console.log(req.params.id)
-    const apiResponse = await axios.get(`http://localhost:5000/applications/${req.params.id}`,
+    const apiResponse = await axios.get(`${host}:5000/applications/${req.params.id}`,
     {
       headers: {
         authorization: `${token_type} ${access_token}`
