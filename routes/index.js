@@ -36,15 +36,15 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
     'data': req.body
   });
 
-  const access_token = req.oidc.accessToken.access_token
-  const token_type = req.oidc.accessToken.token_type
+  // const access_token = req.oidc.accessToken.access_token
+  // const token_type = req.oidc.accessToken.token_type
   console.log(access_token)
 
   var config = {
     method: 'post',
     url: `${host}:5000/`+ req.params.id + "/" + req.params.name,
     headers: { 
-      'Authorization': `${token_type} ${access_token}`, 
+      'Authorization': req.headers.authorization, 
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     data : data
