@@ -17,7 +17,7 @@ var server = http.createServer(app)
 
 var io       = require('socket.io')(server,{
 	cors: {
-			origin: "http://localhost:3000",
+			origin: "http://localhost",
 			methods: ["GET", "POST"],
 			credentials: true,
 			transports: ['websocket', 'polling'],
@@ -108,6 +108,6 @@ app.use(function (err, req, res, next) {
 
 // });
 
-server.listen(3000);
+server.listen(port);
 
 module.exports = app, server, io;
