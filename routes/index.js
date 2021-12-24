@@ -29,12 +29,17 @@ function initMap() {
   })
 });
 
+router.use(function(req,res,next){
+	req.io = io;
+	next();
+});
 
 router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
-  console.log('Got body:', req.headers.authorization);
-  // var data = qs.stringify({
-  //   'data': req.body
-  // });
+  console.log('Got body:', req.body);
+  var data = qs.stringify(
+   req.body
+  );
+  var datas = {}
 
   // const access_token = req.oidc.accessToken.access_token
   // const token_type = req.oidc.accessToken.token_type
@@ -47,22 +52,26 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
       'Authorization': req.headers.authorization, 
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    data : req.body
+    data : data
   };
     axios(config)
     .then(function (response) {
-      console.log("lala",response);
-      console.log(JSON.stringify(response.data));
+      // console.log("lala",response);
+      datas = response.data.datas
+
+      console.log("rs1:", JSON.stringify(response.data.datas));
+      console.log(req.params.name)
+      req.io.sockets.emit(req.params.name, datas);
+    
+
+      res.json(datas);
+      // console.log(JSON.stringify(response.data));
 
 
-  io.on('connection', function (socket) {
-    console.log("rs1:", JSON.stringify(response.data));
-    console.log(req.params.name)
-    socket.emit(req.params.name, response.data);
+  // io.on('connection', function (socket) {
   
-  
-  });
-      res.status(200).json(response.data[0]);
+  // });
+      // res.status(200).json(response.data[0]);
     })
     .catch(function (error) {
       console.log("lilia",error);
@@ -72,8 +81,8 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
 
 
   
-  // console.log("rs1:", data);
-  // res.json(data);
+  // console.log("rs1:", datas);
+  // res.json(datas);
   // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
@@ -115,7 +124,7 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
   
   io.on('connection', function (socket) {
     // console.log("rs1:", JSON.stringify(datas));
-    console.log(req.params.name)
+    // console.log(req.params.name)
     socket.emit(req.params.name, datas);
   
   
