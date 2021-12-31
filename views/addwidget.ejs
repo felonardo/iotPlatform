@@ -185,7 +185,7 @@
 {
 
 	$.ajax({
-		url : 'http://localhost:5000/applications',
+		url : 'http://143.244.150.6:5000/applications',
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
@@ -204,11 +204,11 @@
 });
 
 $('#inputApplication').on('change', function() {
-  console.log('http://localhost:5000/devices/'+ this.value);
+  console.log('http://143.244.150.6:5000/devices/'+ this.value);
 
   
   $.ajax({
-		url : 'http://localhost:5000/devices/'+ this.value,
+		url : 'http://143.244.150.6:5000/devices/'+ this.value,
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
@@ -227,10 +227,10 @@ $('#inputApplication').on('change', function() {
 
 
 $('#inputDevice').on('change', function() {
-  console.log('http://localhost:5000/devices/'+$('#inputApplication').val()+ this.value);
+  console.log('http://143.244.150.6:5000/devices/'+$('#inputApplication').val()+ this.value);
 
   $.ajax({
-		url : 'http://localhost:5000/'+$('#inputApplication').val()+'/'+ this.value,
+		url : 'http://143.244.150.6:5000/'+$('#inputApplication').val()+'/'+ this.value,
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
