@@ -2,9 +2,9 @@
 
 
 
-<div class="header pb-6 d-flex align-items-center" style="min-height: 500px;  background-size: cover; background-position: center top;">
+<div class="header pb-6 d-flex align-items-center" style="min-height: 200px;  background-size: cover; background-position: top;">
   <!-- Mask -->
-  <span class="mask bg-primary"></span>
+  <span class="mask bg-primary">
   <!-- Header container -->
   <div class="container-fluid d-flex align-items-center">
       <div class="header-body">
@@ -14,31 +14,49 @@
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
               <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                <!-- <li class="breadcrumb-item"><a href="#">Components</a></li> -->
                 <li class="breadcrumb-item active" aria-current="page">Profile</li>
               </ol>
             </nav>
           </div>
           </div>
-          <div class="row">
+          <!-- <div class="row"> -->
+          <div class="card mt-3">
             
-          <div class="card mr-3 ml-3">
-            <h2 class="display-4 mt-4 text-muted mr-4 ml-4 text-monospace ">Your Token: </h2>
+          <!-- <div class="card mr-3 ml-3"> -->
+      
+          <!-- </div> -->
+          <div class="container-fluid">
+            <!-- <div class="card mt-3"> -->
+              <div class="row p-3">
+                <h2 class="display-4 mt-4 mb-4 text-primary mr-4 ml-4 text-monospace ">Your Token: </h2>
 
-            <div class="text-muted mt-2 mb-5 mr-4 ml-4 text-break text-monospace  ">
-             <p id="token" class="collapse"><%= tokenType %>  </p>
-             <p id="token" class="collapse"><%= accessToken %> </p>
-            </div>
-            <button type="button" class="btn btn-neutral" data-toggle="collapse" data-target="#token">See or Hide Your Token</button>
-               
+                <div class="text-muted mt-2 mb-5 mr-4 ml-4 text-break text-monospace">
+                 <p id="token" class="collapse"><%= tokenType %></p>
+                 <p id="token" class="collapse"><%= accessToken %></p>
+                </div>
+                <button type="button" class="btn btn-neutral mb-4 mt-4" data-toggle="collapse" data-target="#token">See or Hide Your Token</button>
+                   
+                <!-- <div class="col-3 col-lg-3 col-sm-4">
+                  <img src="" width="250" height="150" class="border border-2 border-dark">
+                </div> -->
+                <!-- <div class="col-6 col-lg-6 col-sm-4"> -->
+                  <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                  </p> -->
+                <!-- </div> -->
+                <!-- <div class="col-3 col-lg-3 col-sm-4">
+                  <button class="btn btn-primary">Confirm</button>
+                </div> -->
+               </div>
+            <!-- </div> -->
           </div>
           
         </div>
       </div>
   </div>
 </div>
+</span>
 <!-- Page content -->
-<div class="container-fluid mt--6">
+<!-- <div class="container-fluid mt--6">
   <div class="row">
     <div class="col-xl-4 order-xl-2">
       <div class="card card-profile">
@@ -46,18 +64,14 @@
         <div class="row justify-content-center">
           <div class="col-lg-3 order-lg-2">
             <div class="card-profile-image">
-              <!-- <a href="#"> -->
                 <% if (user.picture) { %>
                   <img class="rounded-circle" src="<%= user.picture %>">
                 <% } %>
-              <!-- </a> -->
             </div>
           </div>
         </div>
         <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
           <div class="d-flex justify-content-between">
-            <!-- <a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
-            <a href="#" class="btn btn-sm btn-default float-right">Message</a> -->
           </div>
         </div>
         <div class="card-body pt-0">
@@ -130,7 +144,6 @@
               </div>
             </div>
             <hr class="my-4" />
-            <!-- Address -->
             <h6 class="heading-small text-muted mb-4">Contact information</h6>
             <div class="pl-lg-4">
               <div class="row">
@@ -163,7 +176,6 @@
               </div>
             </div>
             <hr class="my-4" />
-            <!-- Description -->
             <h6 class="heading-small text-muted mb-4">About me</h6>
             <div class="pl-lg-4">
               <div class="form-group">
@@ -178,4 +190,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

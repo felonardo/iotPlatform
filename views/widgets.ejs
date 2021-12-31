@@ -3,30 +3,24 @@
       <div class="header-body">
         <div class="row align-items-center py-4">
           <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Application</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Widgets</h6>
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
               <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="/applications">Applications</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><%= appId %></li>
+                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                <!-- <li class="breadcrumb-item"><a href="#">Components</a></li> -->
+                <li class="breadcrumb-item active" aria-current="page">Widgets</li>
               </ol>
             </nav>
           </div>
           <div class="col-lg-6 col-5 text-right">
-            <!-- <a href="application/add-application" class="btn btn-sm btn-neutral">Add Application</a> -->
-            <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
 
             <!-- <a class="btn btn-neutral" href="#">
               <i class="fas fa-wifi text-primary"></i>
               <span class="nav-link-text">Subscribe</span>
             </a> -->
-            <a class="btn btn-neutral" href="/applications/<%= appId %>/useraccess">
-              <i class="fas fa-users text-primary"></i>
-              <span class="nav-link-text">User Access</span>
-            </a>
-            <a class="btn btn-neutral" href="/applications/<%= appId %>/add-device">
+            <a class="btn btn-neutral" href="/widgets/add-widget">
               <i class="fas fa-plus text-primary"></i>
-              <span class="nav-link-text">Add Device</span>
+              <span class="nav-link-text">Add Widgets</span>
             </a>
           </div>
         </div>
@@ -38,11 +32,11 @@
     <div class="row justify-content-center">
       <div class=" col ">
         <div class="card">
-          <div class="row">
+          <!-- <div class="row"> -->
             <div class="card-header bg-transparent">
-              <h2 class="mb-0 ml-4"><%= appId %> Devices</h2>
+              <h2 class="mb-0 ml-4">Your Widgets: </h2>
             </div>
-            <div class="row ml-3 mt-3 mb-3">
+            <!-- <div class="row col-lg-10 mb-3 mt-3 text-right ">
               <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
                 <div class="form-group mb-0">
                   <div class="input-group input-group-alternative input-group-merge">
@@ -60,29 +54,29 @@
                 <i class="fas fa-filter"></i>
                 <span>Filter</span>
               </a>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
+          
           <div class="card-body">
-            <div class="row icon-examples">
+            <!-- <div class="row "> -->
               <% for(var i=0; i < datas.length; i++) { %>
-                <a href="/applications/<%= datas[i].appId %>/device/<%= datas[i].deviceName %>" class= "col-lg-3 col-md-6 mb-3 mr-3 ml-3 btn btn-neutral text-left">
-                  <div class ="card-stats mt-4">
-                    <div class="row">
-                      <div class="col">
-                          <h5 class="card-title text-uppercase text-muted mb-0"><%= datas[i].appId %></h5>
-                          <span><%= datas[i].deviceName %></span>
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
-                            <i class="ni ni-sound-wave"></i>
+                    <a href="/applications/<%= datas[i].appId %> " class= "col-lg-3 col-md-6 mb-3 mr-3 ml-3 btn btn-neutral text-left" >
+                      <div class ="card-stats mt-4">
+                          <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0"><%= datas[i].appName %></h5>
+                                <span><%= datas[i].appId %></span>
+                            </div>
+                            <div class="col-auto">
+                              <div class="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
+                                  <i class="ni ni-spaceship"></i>
+                              </div>
+                            </div>
                         </div>
                       </div>
-                  </div>
-                </div>
-              </a>
-          <% } %>
-             
-            </div>
+                  </a>
+              <% } %>
+            <!-- </div> -->
           </div>
         </div>
       </div>

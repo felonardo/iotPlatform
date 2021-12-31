@@ -20,6 +20,7 @@ var io       = require('socket.io')(server,{
 			origin: "http://localhost",
 			methods: ["GET", "POST"],
 			credentials: true,
+      reconnection: true,
 			transports: ['websocket', 'polling'],
 	},
 	allowEIO3: true
@@ -38,10 +39,10 @@ var io       = require('socket.io')(server,{
 //   cookie: { secure: true }
 // }));
 
-router.use(function(req,res,next){
-	req.io = io;
-	next();
-});
+// router.use(function(req,res,next){
+// 	req.io = io;
+// 	next();
+// });
 
 
 app.use(expressLayouts);

@@ -32,11 +32,11 @@
     <div class="row justify-content-center">
       <div class=" col ">
         <div class="card">
-          <div class="row">
+          <!-- <div class="row"> -->
             <div class="card-header bg-transparent">
-              <h2 class="mb-0 ml-4">Your Applications</h2>
+              <h2 class="mb-0 ml-4">Your Applications: </h2>
             </div>
-            <div class="row col-lg-10 mb-3 mt-3 text-right ">
+            <!-- <div class="row col-lg-10 mb-3 mt-3 text-right ">
               <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
                 <div class="form-group mb-0">
                   <div class="input-group input-group-alternative input-group-merge">
@@ -54,21 +54,29 @@
                 <i class="fas fa-filter"></i>
                 <span>Filter</span>
               </a>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           
           <div class="card-body">
-            <div class="row icon-examples">
+            <!-- <div class="row "> -->
               <% for(var i=0; i < datas.length; i++) { %>
                     <a href="/applications/<%= datas[i].appId %> " class= "col-lg-3 col-md-6 mb-3 mr-3 ml-3 btn btn-neutral text-left" >
-                      <div class ="card-body">
-                        <span><%= datas[i].appId %></span>
-                        <span><%= datas[i].appName %></span>
-                        <span><%= datas[i].userId %></span>
+                      <div class ="card-stats mt-4">
+                          <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0"><%= datas[i].appName %></h5>
+                                <span><%= datas[i].appId %></span>
+                            </div>
+                            <div class="col-auto">
+                              <div class="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
+                                  <i class="ni ni-spaceship"></i>
+                              </div>
+                            </div>
+                        </div>
                       </div>
                   </a>
               <% } %>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
       </div>

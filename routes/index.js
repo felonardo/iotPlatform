@@ -56,7 +56,6 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   };
     axios(config)
     .then(function (response) {
-      // console.log("lala",response);
       datas = response.data.datas
 
       console.log("rs1:", JSON.stringify(response.data.datas));
@@ -65,13 +64,6 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
     
 
       res.json(datas);
-      // console.log(JSON.stringify(response.data));
-
-
-  // io.on('connection', function (socket) {
-  
-  // });
-      // res.status(200).json(response.data[0]);
     })
     .catch(function (error) {
       console.log("lilia",error);
@@ -122,7 +114,7 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
   // },2000)
 
   
-  io.on('connection', function (socket) {
+  io.once('connection', function (socket) {
     // console.log("rs1:", JSON.stringify(datas));
     // console.log(req.params.name)
     socket.emit(req.params.name, datas);
@@ -140,6 +132,39 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
       datas
       });
     });
+
+
+    router.get('/widgets', requiresAuth(), urlencodedParser, async (req, res) => {
+
+      let datas = {}
+    
+      const access_token = req.oidc.accessToken.access_token
+      const token_type = req.oidc.accessToken.token_type
+      console.log(req.oidc)
+    
+      try {
+        const apiResponse = await axios.get(`${host}:5000/applications`, 
+        {
+        // params: {
+        //   userId: req.oidc.user.nickname
+        // },
+        headers: { 
+          'Authorization': `${token_type} ${access_token}`, 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        })
+        datas = apiResponse.data
+      } catch(e) { }
+    
+        res.render('widgets', {
+          isAuthenticated: req.oidc.isAuthenticated(),
+          user: req.oidc.user,
+          tokenType: token_type,
+          accessToken: access_token,
+          datas
+        });
+    });
+    
 
 router.get('/applications', requiresAuth(), urlencodedParser, async (req, res) => {
 
@@ -180,6 +205,12 @@ router.get('/applications/add-application', requiresAuth(), function (req, res, 
   })
 });
 
+router.get('/widgets/add-widget', requiresAuth(), function (req, res, next) {
+  res.render('addwidget', {
+    isAuthenticated: req.oidc.isAuthenticated(),
+    user: req.oidc.user
+  })
+});
 
 router.get('/applications/:id/add-device', requiresAuth(), function (req, res, next) {
   res.render('adddevice', {
@@ -250,7 +281,7 @@ router.post('/applications/:id/add-device', requiresAuth(), urlencodedParser, (r
       console.log("lilia",error);
       console.log(error);
     });
-  res.redirect('/applications/' + req.params.id)
+  res.redirect('/applications/'+ req.params.id + '/device/' + req.body.deviceName)
 });
 
 router.post('/applications/add-application', requiresAuth(), urlencodedParser, (req, res) => {
