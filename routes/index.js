@@ -61,7 +61,12 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
       console.log("rs1:", JSON.stringify(response.data.datas));
       console.log(req.params.name)
       req.io.sockets.emit(req.params.name, datas);
-    
+
+      io.once('connection', function (socket) {
+        console.log("rs1:", JSON.stringify(datas));
+        // console.log(req.params.name)
+        socket.emit(req.params.name, datas);
+      });
 
       res.json(datas);
     })
@@ -115,11 +120,9 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
 
   
   io.once('connection', function (socket) {
-    // console.log("rs1:", JSON.stringify(datas));
+    console.log("rs1:", JSON.stringify(datas));
     // console.log(req.params.name)
     socket.emit(req.params.name, datas);
-  
-  
   });
 
     res.render('device', {
@@ -145,9 +148,6 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
       try {
         const apiResponse = await axios.get(`${host}:5000/applications`, 
         {
-        // params: {
-        //   userId: req.oidc.user.nickname
-        // },
         headers: { 
           'Authorization': `${token_type} ${access_token}`, 
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -205,10 +205,30 @@ router.get('/applications/add-application', requiresAuth(), function (req, res, 
   })
 });
 
-router.get('/widgets/add-widget', requiresAuth(), function (req, res, next) {
+router.get('/widgets/add-widget', requiresAuth(), urlencodedParser, async(req , res) => {
+
+  let datas = {}
+    
+  const access_token = req.oidc.accessToken.access_token
+  const token_type = req.oidc.accessToken.token_type
+  console.log(req.oidc)
+
+  try {
+    const apiResponse = await axios.get(`${host}:5000/applications`, 
+    {
+    headers: { 
+      'Authorization': `${token_type} ${access_token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    })
+    datas = apiResponse.data
+  } catch(e) { }
+
   res.render('addwidget', {
     isAuthenticated: req.oidc.isAuthenticated(),
-    user: req.oidc.user
+    user: req.oidc.user,
+    access_token: access_token,
+    datas
   })
 });
 

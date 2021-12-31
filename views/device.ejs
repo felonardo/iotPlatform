@@ -41,7 +41,7 @@
           </div>
           <!-- Light table -->
           <div class="table-responsive">
-            <table class="table align-items-center table-flush">
+            <table id='myTable' class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
                   <th scope="col" class="sort" data-sort="name">Time</th>
@@ -50,26 +50,22 @@
                 </tr>
               </thead>
               <tbody class="list">
-                <% for(var i=0; i < datas.length; i++) { %>
                
                 <tr>
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm"><%= new Date(datas[i].timestamp) %></span>
                       </div>
                     </div>
                   </th>                 
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm"><%= JSON.stringify(datas[i].data);%></span>
                       </div>
                     </div>
                   </th>
                 </tr>
 
-          <% } %>
               </tbody>
             </table>
           </div>
@@ -93,19 +89,28 @@
   var deviceName = '<%- deviceName %>'
   
   socket.on(deviceName, function (response) {
-  
      var i = 0;
-  
+    
+     $(myTable).find('tbody').empty()
       for (var key in response) {
         data.labels[i] = new Date(response[i].timestamp).toLocaleTimeString();
         data.datasets[0].data[i] = Object.values(response[i].data)[0];
+        
+         
+        $(myTable).find('tbody').append("<tr><td>"+data.labels[i]+"</td><td>"+JSON.stringify(response[i].data)+"</td</tr>");
         i++;
-     }
 
-     
+     }
+    response = null;
+    console.log(data)
       // Update chart
+      // $(myTable).update();
+
      myChart.update(); 
+    //  socket.close()
   });
+
+  // socket.close()
   
   // Chart Data
   data = {

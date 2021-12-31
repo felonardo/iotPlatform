@@ -63,86 +63,81 @@
 
               <div class="col-lg-6">
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>1</option>
+                <label for="exampleFormControlSelect1">Application</label>
+                <select name="inputApplication" class="form-control" id="inputApplication" >
+                <option value="" selected disabled>Choose Application</option>
+                  <!-- <option>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
-                  <option>5</option>
+                  <option>5</option> -->
                 </select>
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>1</option>
+                <label for="exampleFormControlSelect1">Device</label>
+                <select name="inputDevice" class="form-control" id="inputDevice">
+                  <option value="" selected disabled>Choose Device</option>
+                  <!-- <option>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
-                  <option>5</option>
+                  <option>5</option> -->
                 </select>
               </div>
               </div>
-              <!-- <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-first-name">First name</label>
-                    <input type="text" id="input-first-name" class="form-control" placeholder="First name" value="Lucky">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-last-name">Last name</label>
-                    <input type="text" id="input-last-name" class="form-control" placeholder="Last name" value="Jesse">
-                  </div>
-                </div>
-              </div> -->
-            </div>
-            <!-- <hr class="my-4" />
-            <h6 class="heading-small text-muted mb-4">Contact information</h6>
-            <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-address">Address</label>
-                    <input id="input-address" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-city">City</label>
-                    <input type="text" id="input-city" class="form-control" placeholder="City" value="New York">
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Country</label>
-                    <input type="text" id="input-country" class="form-control" placeholder="Country" value="United States">
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Postal code</label>
-                    <input type="number" id="input-postal-code" class="form-control" placeholder="Postal code">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="my-4" />
-            <h6 class="heading-small text-muted mb-4">About me</h6>
-            <div class="pl-lg-4">
-              <div class="form-group">
-                <label class="form-control-label">About Me</label>
-                <textarea rows="4" class="form-control" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
-              </div>
-            </div> -->
 
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Data</label>
+                  <select name="inputData" class="form-control" id="inputData">
+                    <option value="" selected disabled>Choose Data</option>
+                    <!-- <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option> -->
+                  </select>
+                </div>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+            
+            <!-- <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="name">Time</th>
+                    <th scope="col" class="sort" data-sort="name">Data</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody class="list">
+            <% for(var i=0; i < datas.length; i++) { %>
+               
+              <tr>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm"><%= new Date(datas[i].timestamp) %></span>
+                    </div>
+                  </div>
+                </th>                 
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm"><%= JSON.stringify(datas[i].appName);%></span>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+
+        <% } %>
+      </tbody>
+    </table>
+  </div> -->
           <!-- <a href="" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Add</a> -->
           </form>
         </div>
@@ -150,3 +145,125 @@
     <!-- </div> -->
   <!-- </div> -->
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+//   var option = [
+//     {
+//         "mod": "Width",
+//         "values": {
+//             "field": "A",
+//             "value": "96"
+//         }
+//     },
+//     {
+//         "mod": "Height",
+//         "values": {
+//             "field": "B",
+//             "value": "33"
+//         }
+//     }
+// ]
+
+//   $("#inputApplication").append($.map(option, function(o) {
+//     return $('<option/>', {
+//       value: o.values.value,
+//       text: o.values.field
+//     });
+//   }));
+
+// $('#Assign').hide(); // first hide it so they cannot see it
+// $(document).on('change', '#Reg', function(e){
+//     if($(this).val()=='admin'){
+//         $('#Assign').show();
+//     }else{
+//         $('#Assign').val('').hide();
+//     }
+// })
+
+  $(document).ready(function () 
+{
+
+	$.ajax({
+		url : 'http://localhost:5000/applications',
+		type : 'GET',  
+    headers: {
+    "Authorization": "Bearer " + "<%= access_token %>"
+    },
+		dataType : 'json',
+		success:function(data)
+		{
+
+    $("#inputApplication").empty();
+    $("#inputApplication").append('<option value="" selected disabled>Choose Application</option>');
+      $.each(data, function(i, value) {
+            $('#inputApplication').append('<option value=' + value.appId + '>' + value.appId + '</option>');
+        });
+		}
+	});
+});
+
+$('#inputApplication').on('change', function() {
+  console.log('http://localhost:5000/devices/'+ this.value);
+
+  
+  $.ajax({
+		url : 'http://localhost:5000/devices/'+ this.value,
+		type : 'GET',  
+    headers: {
+    "Authorization": "Bearer " + "<%= access_token %>"
+    },
+		dataType : 'json',
+		success:function(data)
+		{
+      $("#inputDevice").empty();
+      $("#inputDevice").append('<option value="" selected disabled>Choose Device</option>');
+			$.each(data, function(key,value){
+				$("#inputDevice").append('<option value="'+ value.deviceName +'">'+ value.deviceName +'</option>');
+			});
+		}
+	});
+});
+
+
+$('#inputDevice').on('change', function() {
+  console.log('http://localhost:5000/devices/'+$('#inputApplication').val()+ this.value);
+
+  $.ajax({
+		url : 'http://localhost:5000/'+$('#inputApplication').val()+'/'+ this.value,
+		type : 'GET',  
+    headers: {
+    "Authorization": "Bearer " + "<%= access_token %>"
+    },
+		dataType : 'json',
+		success:function(data)
+		{
+      // $("#inputDevice").empty()
+      $("#inputData").empty();
+      $("#inputData").append('<option value="" selected disabled>Choose Data</option>');
+			$.each(data[0].datas[0].data, function(key,value){
+        // myMap.set(Object.keys(value.data)[0], Object.values(value.data)[i])
+        // set.add(Object.keys(value.data));
+        // console.log(key,value);
+        // console.log(Object.keys(value.data)[0])
+        // uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+        // i=i+1
+				$("#inputData").append('<option value="'+ key +'">'+ key +'</option>');
+			});
+        // console.log(set);
+      // myMap.forEach((_,key) => console.log(key));
+      // console.log(myMap)
+      
+		}
+	});
+});
+
+// $(document).ready(function () 
+// {
+//   // var e = document.getElementById("inputApplication");
+//   // var val = e.options[e.selectedIndex].value;
+
+// console.log('http://localhost:5000/devices/'+$("#inputApplication :selected").text());
+  
+// });
+</script>
