@@ -7,13 +7,15 @@ const path = require('path');
 const cors = require('cors');
 const router = require('./routes/index');
 const { auth } = require('express-openid-connect');
+require('events').EventEmitter.prototype._maxListeners = 0;
 
 
 
 dotenv.load();
 
 var app = express();
-var server = http.createServer(app)
+var server = http.createServer(app);
+// server.globalAgent.maxSockets = Infinity;
 
 var io       = require('socket.io')(server,{
 	cors: {
@@ -26,6 +28,7 @@ var io       = require('socket.io')(server,{
 	allowEIO3: true
 	}) 
   // app.set("io",io);
+  io.setMaxListeners(0);
 
   global.io = io
 
