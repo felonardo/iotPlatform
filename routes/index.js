@@ -15,18 +15,22 @@ const host = process.env.HOST;
 
 router.get('/', function (req, res, next) {
   
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8,
-  });
-}
-
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById("map"), {
+//     center: { lat: -34.397, lng: 150.644 },
+//     zoom: 8,
+//   });
+// }
+if (req.oidc.isAuthenticated()){
+  res.redirect('/applications')
+} else{
   res.render('home', {
     isAuthenticated: req.oidc.isAuthenticated(),
     user: req.oidc.user,
-    initMap
+    // initMap
   })
+}
+
 });
 
 router.use(function(req,res,next){
@@ -140,13 +144,15 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
     router.get('/widgets', requiresAuth(), urlencodedParser, async (req, res) => {
 
       let datas = {}
+      let host = process.env.HOST
+      // let datasdevices = {}
     
       const access_token = req.oidc.accessToken.access_token
       const token_type = req.oidc.accessToken.token_type
       console.log(req.oidc)
     
       try {
-        const apiResponse = await axios.get(`${host}:5000/applications`, 
+        const apiResponse = await axios.get(`${host}:5000/widgets`, 
         {
         headers: { 
           'Authorization': `${token_type} ${access_token}`, 
@@ -154,14 +160,35 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
         },
         })
         datas = apiResponse.data
+        console.log("lulululul", datas)
       } catch(e) { }
-    
+
+      // try {
+      //   const apiResponses = await axios.get(`${host}:5000/devices`, 
+      //   {
+      //   headers: { 
+      //     'Authorization': `${token_type} ${access_token}`, 
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   },
+      //   })
+      //   datasdevices = apiResponses.data
+      //   console.log("lililili", datas)
+      // } catch(e) { }
+
+      // io.once('connection', function (socket) {
+      //   console.log("rs1:", JSON.stringify(datas));
+      //   // console.log(req.params.name)
+      //   socket.emit("widget", datas);
+      // });
+
         res.render('widgets', {
           isAuthenticated: req.oidc.isAuthenticated(),
           user: req.oidc.user,
           tokenType: token_type,
           accessToken: access_token,
-          datas
+          datas,
+          host
+          // datasdevices
         });
     });
     
@@ -198,11 +225,49 @@ router.get('/applications', requiresAuth(), urlencodedParser, async (req, res) =
 });
 
 
-router.get('/applications/add-application', requiresAuth(), function (req, res, next) {
+
+router.get('/devices/add-application', requiresAuth(), function (req, res, next) {
   res.render('addapplication', {
     isAuthenticated: req.oidc.isAuthenticated(),
     user: req.oidc.user
   })
+});
+
+router.post('/widgets/add-widget', requiresAuth(), urlencodedParser, (req, res) => {
+  console.log('Got body:', req.body);
+  var data = qs.stringify({
+    'appId': req.body.inputApplication,
+    'deviceName': req.body.inputDevice,
+    'datax': req.body.inputDatax,
+    'type' : req.body.options,
+    'userName': req.oidc.user.nickname, 
+    'userEmail': req.oidc.user.email,  
+    'userId': req.oidc.user.email, 
+  });
+
+  const access_token = req.oidc.accessToken.access_token
+  const token_type = req.oidc.accessToken.token_type
+  console.log("du:",data.type)
+
+  var config = {
+    method: 'post',
+    url: `${host}:5000/widgets`,
+    headers: { 
+      'Authorization': `${token_type} ${access_token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data : data
+  };
+    axios(config)
+    .then(function (response) {
+      // console.log("lala",response);
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log("lilia",error);
+      console.log(error);
+    });
+  res.redirect('/widgets')
 });
 
 router.get('/widgets/add-widget', requiresAuth(), urlencodedParser, async(req , res) => {
@@ -236,6 +301,17 @@ router.get('/applications/:id/add-device', requiresAuth(), function (req, res, n
   res.render('adddevice', {
     isAuthenticated: req.oidc.isAuthenticated(),
     user: req.oidc.user
+  })
+});
+
+router.get('/applications/:appId/devices/:id/set-lora', requiresAuth(), function (req, res, next) {
+
+  const access_token = req.oidc.accessToken.access_token
+
+  res.render('addlora', {
+    isAuthenticated: req.oidc.isAuthenticated(),
+    user: req.oidc.user,
+    access_token: access_token
   })
 });
 

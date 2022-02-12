@@ -31,12 +31,27 @@
         <div class="card">
           <!-- Card header -->
           <div class="card-header border-0">
-            <h2 class="mb-0"><%= deviceName %></h2>
+            <div class="row">
+              <h2 class="ml-4 col"><%= deviceName %></h2>
+              <!-- <button type="button" class="btn btn-primary mr-4" >Set LoraWan</button> -->
+              <a class="btn btn-warning mr-4" href="/applications/<%= appId %>/devices/<%= deviceName %>/set-lora">
+                <i class="fas fa-wifi text-white"></i>
+                <span class="nav-link-text">Set LoraWAN</span>
+              </a>
+            </div>
+
           </div>
           <div class="card-body border-1">
-            <h5 class="mb-0">URI Device: http://143.244.150.6/applications/<%= appId %>/device/<%= deviceName %></h5>
-            <div class="vote-result-wrapper">
-              <canvas id="vote-result"></canvas>
+            <h4 class="ml-4">URI Device:</h4>
+            <div class="row">
+              <div class="row col">
+                <input type=text id="copyText" style="background:transparent; color: black; max-width: 950px;" readonly value=" http://143.244.150.6/applications/<%= appId %>/device/<%= deviceName %>" class="form-control no-border mb-4 ml-4 "></input>
+                <button type="button" id="copyBtn" class="btn btn-neutral mb-4 ml-4" >Copy</button>
+              </div>
+              <button type="button" class="btn btn-neutral mr-4" style="max-height: 45px;" data-toggle="collapse" data-target="#lala">Show / Hide Graph</button>
+            </div>
+            <div id="lala" class="vote-result-wrapper collapse show">
+              <canvas id="vote-result" class="collapse" width="200" height="50"></canvas>
            </div>
           </div>
           <!-- Light table -->
@@ -97,7 +112,7 @@
         data.datasets[0].data[i] = Object.values(response[i].data)[0];
         
          
-        $(myTable).find('tbody').append("<tr><td>"+data.labels[i]+"</td><td>"+JSON.stringify(response[i].data)+"</td</tr>");
+        $(myTable).find('tbody').append("<tr><td>"+data.labels[i]+"</td><td>"+JSON.stringify(response[i].data, null, '\t')+"</td</tr>");
         i++;
 
      }
@@ -133,3 +148,21 @@
   });
   
   </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    const copyBtn = document.getElementById('copyBtn')
+    const copyText = document.getElementById('copyText')
+    
+    copyBtn.onclick = () => {
+        copyText.select();    // Selects the text inside the input
+        document.execCommand('copy');    // Simply copies the selected text to clipboard 
+         Swal.fire({         //displays a pop up with sweetalert
+            icon: 'success',
+            title: 'Text copied to clipboard',
+            showConfirmButton: false,
+            timer: 1000
+        });
+    }
+</script>

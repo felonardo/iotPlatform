@@ -48,15 +48,19 @@
               <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-primary btn-lg">
                   <i class="ni ni-sound-wave text-yellow"></i>
-                  <input type="radio" name="options" id="option1" autocomplete="off" checked> Line Chart
+                  <input type="radio" name="options" value="line" id="line" autocomplete="off" checked> Line Chart
                 </label>
                 <label class="btn btn-primary btn-lg">
                   <i class="ni ni-sound-wave text-yellow"></i>
-                  <input type="radio" name="options" id="option2" autocomplete="off"> Double Axis
+                  <input type="radio" name="options" value="bar" id="bar" autocomplete="off" > Bar Chart
                 </label>
                 <label class="btn btn-primary btn-lg">
                   <i class="ni ni-sound-wave text-yellow"></i>
-                  <input type="radio" name="options" id="option3" autocomplete="off"> Scatter Plot
+                  <input type="radio" name="options" value="option2" id="option2" autocomplete="off"> Double Axis
+                </label>
+                <label class="btn btn-primary btn-lg">
+                  <i class="ni ni-sound-wave text-yellow"></i>
+                  <input type="radio" name="options" value="option3" id="option3" autocomplete="off"> Scatter Plot
                 </label>
               </div>
               </div>
@@ -92,7 +96,7 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Data</label>
-                  <select name="inputData" class="form-control" id="inputData">
+                  <select name="inputDatax" class="form-control" id="inputDatax">
                     <option value="" selected disabled>Choose Data</option>
                     <!-- <option>1</option>
                     <option>2</option>
@@ -180,12 +184,21 @@
 //         $('#Assign').val('').hide();
 //     }
 // })
-
+// $("input:radio[name=selection]").click(function() {
+//         var value = $(this).val();
+//         alert(value);
+//         console.log(value)
+//         var id= $(this).attr('id');
+//         alert(id);
+//         console.log(id)
+//     });
   $(document).ready(function () 
 {
-
+  // console.log($("#options").val())
+  
+  console.log($('input[name=options]:checked').val())
 	$.ajax({
-		url : 'http://143.244.150.6:5000/applications',
+		url : 'http://localhost:5000/applications',
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
@@ -204,11 +217,12 @@
 });
 
 $('#inputApplication').on('change', function() {
-  console.log('http://143.244.150.6:5000/devices/'+ this.value);
+  console.log('http://localhost:5000/devices/'+ this.value);
+  console.log($("#options").val())
 
   
   $.ajax({
-		url : 'http://143.244.150.6:5000/devices/'+ this.value,
+		url : 'http://localhost:5000/devices/'+ this.value,
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
@@ -227,10 +241,10 @@ $('#inputApplication').on('change', function() {
 
 
 $('#inputDevice').on('change', function() {
-  console.log('http://143.244.150.6:5000/devices/'+$('#inputApplication').val()+ this.value);
+  console.log('http://localhost:5000/devices/'+$('#inputApplication').val()+ this.value);
 
   $.ajax({
-		url : 'http://143.244.150.6:5000/'+$('#inputApplication').val()+'/'+ this.value,
+		url : 'http://localhost:5000/'+$('#inputApplication').val()+'/'+ this.value,
 		type : 'GET',  
     headers: {
     "Authorization": "Bearer " + "<%= access_token %>"
@@ -239,8 +253,8 @@ $('#inputDevice').on('change', function() {
 		success:function(data)
 		{
       // $("#inputDevice").empty()
-      $("#inputData").empty();
-      $("#inputData").append('<option value="" selected disabled>Choose Data</option>');
+      $("#inputDatax").empty();
+      $("#inputDatax").append('<option value="" selected disabled>Choose Data</option>');
 			$.each(data[0].datas[0].data, function(key,value){
         // myMap.set(Object.keys(value.data)[0], Object.values(value.data)[i])
         // set.add(Object.keys(value.data));
@@ -248,7 +262,7 @@ $('#inputDevice').on('change', function() {
         // console.log(Object.keys(value.data)[0])
         // uniqueArray = Array.from(uniqueSet).map(JSON.parse);
         // i=i+1
-				$("#inputData").append('<option value="'+ key +'">'+ key +'</option>');
+				$("#inputDatax").append('<option value="'+ key +'">'+ key +'</option>');
 			});
         // console.log(set);
       // myMap.forEach((_,key) => console.log(key));

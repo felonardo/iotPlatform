@@ -27,15 +27,23 @@
           <!-- </div> -->
           <div class="container-fluid">
             <!-- <div class="card mt-3"> -->
-              <div class="row p-3">
+              <div class="row">
                 <h2 class="display-4 mt-4 mb-4 text-primary mr-4 ml-4 text-monospace ">Your Token: </h2>
 
-                <div class="text-muted mt-2 mb-5 mr-4 ml-4 text-break text-monospace">
-                 <p id="token" class="collapse"><%= tokenType %></p>
-                 <p id="token" class="collapse"><%= accessToken %></p>
+                <!-- <div class="text-muted mt-2 mb-5 mr-4 ml-4 text-break text-monospace collapse show " id="token"> -->
+                 <p <%= tokenType %></p>
+
+                <div class="form-group collapse" id="token" style="width:100%; height:max-content;">
+                  <textarea input type="text" style="width:1000px; height:max-content; color: black; background: transparent;" value="<%= accessToken %>"" id="copyText" class="form-control no-border " rows="10" readonly><%= accessToken %></textarea>
                 </div>
+                <!-- </div>
+                <div class="form-group width="100"> -->
+                <button id="copyBtn" type="button" class="btn btn-neutral mb-4 mt-4">Copy</button>
                 <button type="button" class="btn btn-neutral mb-4 mt-4" data-toggle="collapse" data-target="#token">See or Hide Your Token</button>
                    
+                        <!-- The text field -->
+        <!-- <input type="text" value="https://bisabos.com/blog/cara-membuat-animasi-mengetik-teks-dengan-css-dan-javascript" id="copyText" readonly> -->
+        <!-- The button used to copy the text -->
                 <!-- <div class="col-3 col-lg-3 col-sm-4">
                   <img src="" width="250" height="150" class="border border-2 border-dark">
                 </div> -->
@@ -191,3 +199,19 @@
     </div>
   </div>
 </div> -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            const copyBtn = document.getElementById('copyBtn')
+            const copyText = document.getElementById('copyText')
+            
+            copyBtn.onclick = () => {
+                copyText.select();    // Selects the text inside the input
+                document.execCommand('copy');    // Simply copies the selected text to clipboard 
+                 Swal.fire({         //displays a pop up with sweetalert
+                    icon: 'success',
+                    title: 'Text copied to clipboard',
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        </script>

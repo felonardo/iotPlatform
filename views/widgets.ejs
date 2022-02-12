@@ -57,14 +57,14 @@
             </div> -->
           <!-- </div> -->
           
-          <div class="card-body">
+          <div class="card-body" id="card-body" name=card-body">
             <!-- <div class="row "> -->
-              <% for(var i=0; i < datas.length; i++) { %>
+              <!-- <% for(var i=0; i < datas.length; i++) { %>
                     <a href="/applications/<%= datas[i].appId %> " class= "col-lg-3 col-md-6 mb-3 mr-3 ml-3 btn btn-neutral text-left" >
                       <div class ="card-stats mt-4">
                           <div class="row">
                             <div class="col">
-                                <h5 class="card-title text-uppercase text-muted mb-0"><%= datas[i].appName %></h5>
+                                <h5 class="card-title text-uppercase text-muted mb-0"><%= datas[i].datax %></h5>
                                 <span><%= datas[i].appId %></span>
                             </div>
                             <div class="col-auto">
@@ -75,10 +75,236 @@
                         </div>
                       </div>
                   </a>
-              <% } %>
+              <% } %> -->
+
+            <!-- <div class="vote-result-wrapper"> -->
+              <!-- <canvas id="vote-result"></canvas> -->
+           <!-- </div> -->
             <!-- </div> -->
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+  
+  <script>
+  // Setting socket
+
+  var datass = [];
+  var host = '<%= host %>';
+  var tokenType = '<%= tokenType %>';
+  var accessToken = '<%= accessToken %>';
+  var datas = JSON.parse('<%- JSON.stringify(datas) %>');
+  // var datass = JSON.parse(datas)
+  var myChart = [];
+  var context;
+  var socket = io();
+
+
+  
+  // socket.on("widget", function (response) {
+  //    var i = 0;
+    
+  //   //  $(myTable).find('tbody').empty()
+  //     for (var key in response) {
+  //       // data.labels[i] = new Date(response[i].timestamp).toLocaleTimeString();
+  //       // data.datasets[0].data[i] = Object.values(response[i].data)[0];
+
+  //       console.log(response)
+  //       // showModalChart(Object.values(response[i].data)[0]);
+         
+  //       // $(myTable).find('tbody').append("<tr><td>"+data.labels[i]+"</td><td>"+JSON.stringify(response[i].data)+"</td</tr>");
+  //       i++;
+
+  //    }
+  //   response = null;
+  //   console.log(data)
+  //     // Update chart
+  //     // $(myTable).update();
+
+  //   //  myChart.update(); 
+  //   //  socket.close()
+  // });
+
+  // socket.close()
+  
+  // showModalChart(data);
+  // Chart Data
+  // data = {
+  //    labels: [],
+  //    datasets: [
+  //         {
+  //             label: [],
+  //             data: [],
+  //         }
+  //     ]
+  // };
+  
+  // context = document.getElementById('vote-result').getContext('2d');
+  // myChart = new Chart(context,
+  // {
+  //    type: 'line',
+  //    data: data,
+  //    animation:{ 
+  //       animateScale:true
+  //    }
+  // });
+  for(var j=0; j < datas.length; j++) {
+      console.log(datas[j].deviceName)
+  // }
+
+  var data = {
+     labels: [],
+     datasets: [
+          {
+              label: [],
+              data: [],
+          }
+      ]
+  };
+  // socket.on(datas[j].deviceName, function (response) {
+  // // socket.on("CoffeMachine2", function (response) {
+    
+  //   //  $(myTable).find('tbody').empty()
+  //       var i =0;
+  //     for (var key in response) {
+
+    // getapi(host+":5000/"+datas[j].appId+"/"+datas[j].deviceName, j)
+    var lala = httpGet(host+":5000/"+datas[j].appId+"/"+datas[j].deviceName, j)
+    // console.log(host+":5000/"+datas[j].appId+"/"+datas[j].deviceName);
+    // console.log("lala:"+lala)
+  //       // showModalChart(Object.values(response[i].data)[0]);
+  var json = JSON.parse(lala)
+  // console.log("lala2:"+JSON.stringify(json[0]))
+  //       // $(myTable).find('tbody').append("<tr><td>"+data.labels[i]+"</td><td>"+JSON.stringify(response[i].data)+"</td</tr>");
+  //       i++;
+
+    for(var i=0; i < json[0].datas.length; i++) {
+        // console.log("lala: " , i)
+  //       data.labels[i] = new Date(response[i].timestamp).toLocaleTimeString();
+  
+        data.labels[i] = new Date(json[0].datas[i].timestamp).toLocaleTimeString();
+        // data.datasets[0].data[i] = Object.values(response[i].data)[0];
+        data.datasets[0].data[i] = Object.values(json[0].datas[i].data)[0];
+
+    }
+
+
+    // console.log(data);
+    datass.push(data);
+    showModalChart(datass[j],j,datas[j]);
+    // return result
+    // show(data);
+  //    }
+  //   // response = null;
+  //   // console.log(data)
+  //     // Update chart
+  //     // $(myTable).update();
+  //   //  myChart[j].update(); 
+  //   //  socket.close()
+  // console.log(j)
+  // });
+
+  // datass.push(data)
+  // console.log("didi",datass[j])
+  // showModalChart(datass[j],j);
+
+  console.log("didi",datass[j]);
+  }
+
+  function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.setRequestHeader('Authorization', tokenType + ' ' + accessToken);
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+  // console.log(datas)
+  
+  async function getapi(url, j) {
+    
+    
+    // Storing response
+    const response = await fetch(url, {
+    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      // 'Content-Type': 'application/json',
+      'Authorization': tokenType + ' ' + accessToken,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    // body: JSON.stringify(data) // body data type must m atch "Content-Type" header
+  })    .then(function(response){
+         // response is a json string
+        return response.json();// convert it to a pure JavaScript object
+    })
+    
+  //   // Storing data in form of JSON
+  //   var result = await response.json();
+  //   // console.log(result);
+  //   // if (response) {
+  //   //     // hideloader(); 
+  //   // }
+    
+  //   var json = JSON.parse(JSON.stringify(result))
+  //   console.log(json[0].datas);
+
+  //   for(var i=0; i < json[0].datas.length; i++) {
+  //       // console.log("lala: " , i)
+  // //       data.labels[i] = new Date(response[i].timestamp).toLocaleTimeString();
+  
+  //       data.labels[i] = new Date(json[0].datas[i].timestamp).toLocaleTimeString();
+  //       // data.datasets[0].data[i] = Object.values(response[i].data)[0];
+  //       data.datasets[0].data[i] = Object.values(json[0].datas[i].data)[0];
+
+  //   }
+  //   console.log(data);
+  //   datass.push(data);
+    // showModalChart(datass[0],j);
+    // return result
+    // show(data);
+}
+
+  function showModalChart(data,j,datas) {
+    var canvasElement = document.createElement("canvas");
+    // canvasElement.width = "10";
+    // canvasElement.setAttribute("height", "10")
+    // canvasElement.setAttribute("width",  "10");
+    // console.log(canvasElement.getAttribute("height");
+    // canvasElement.setAttribute("height", "100");
+    canvasElement.height = "200"; 
+    canvasElement.width = "750";
+    var header = document.createElement("header"),
+    h4 = document.createElement("h4");
+
+    h4.textContent = datas.deviceName;
+    header.appendChild(h4);
+    document.getElementById("card-body").appendChild(header);
+    document.getElementById("card-body").appendChild(canvasElement);
+
+    console.log("tesssssss####")
+    console.log(data)
+    var ctx = document.getElementsByTagName("canvas")[j];
+    // $('#myModal').off('.modalchart').on('shown.bs.modal.modalchart', function () {
+    chart = new Chart(ctx.getContext('2d'),   {
+     type: datas.type,
+     data: data,
+     animation:{ 
+        animateScale:true
+     }
+    // });
+    });
+    myChart.push(chart)
+};
+
+  </script> 
