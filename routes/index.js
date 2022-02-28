@@ -15,12 +15,6 @@ const host = process.env.HOST;
 
 router.get('/', function (req, res, next) {
   
-// function initMap() {
-//   map = new google.maps.Map(document.getElementById("map"), {
-//     center: { lat: -34.397, lng: 150.644 },
-//     zoom: 8,
-//   });
-// }
 if (req.oidc.isAuthenticated()){
   res.redirect('/applications')
 } else{
@@ -45,10 +39,6 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
   );
   var datas = {}
 
-  // const access_token = req.oidc.accessToken.access_token
-  // const token_type = req.oidc.accessToken.token_type
-  // console.log(access_token)
-
   var config = {
     method: 'post',
     url: `${host}:5000/`+ req.params.id + "/" + req.params.name,
@@ -68,7 +58,6 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
 
       io.once('connection', function (socket) {
         console.log("rs1:", JSON.stringify(datas));
-        // console.log(req.params.name)
         socket.emit(req.params.name, datas);
       });
 
@@ -79,53 +68,59 @@ router.post('/applications/:id/device/:name', urlencodedParser, (req, res) => {
       console.log(error);
       res.status(404).json({message: error.message});
     });
-
-
-  
-  // console.log("rs1:", datas);
-  // res.json(datas);
-  // res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
 
 router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, async(req , res) => {
   
   let datas = {}
+  let data = {}
 
   const access_token = req.oidc.accessToken.access_token
   const token_type = req.oidc.accessToken.token_type
   console.log(req.oidc)
   var str = `${host}:5000/` + req.params.id + "/" + req.params.name
+  var str2 = `${host}:5000/` + "device" + "/" + req.params.name
   console.log(str)
+  console.log(str2)
 
-  // setInterval(function(){ 
+  try {
+    const apiResponse2 = await axios.get(str2, 
+    {
+    headers: { 
+      'Authorization': `${token_type} ${access_token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    })
+
+    // data = apiResponse.data
+    data = apiResponse2.data
+ 
+  } catch(e) { 
+    
+  }
+
 
     try {
       const apiResponse = await axios.get(str, 
       {
-      // params: {
-      //   userId: req.oidc.user.nickname
-      // },
       headers: { 
         'Authorization': `${token_type} ${access_token}`, 
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       })
 
-
+      // data = apiResponse.data
       datas = apiResponse.data[0].datas    
 
-      console.log(JSON.stringify(datas));
-      // console.log("lala:", datas)
    
-    } catch(e) { }
+    } catch(e) { 
 
-  // },2000)
+    }
 
   
   io.once('connection', function (socket) {
     console.log("rs1:", JSON.stringify(datas));
-    // console.log(req.params.name)
     socket.emit(req.params.name, datas);
   });
 
@@ -134,9 +129,8 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
       user: req.oidc.user,
       appId: req.params.id,
       deviceName: req.params.name,
-      // tokenType: token_type,
-      // accessToken: access_token,
-      datas
+      datas,
+      data
       });
     });
 
@@ -145,8 +139,6 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
 
       let datas = {}
       let host = process.env.HOST
-      // let datasdevices = {}
-    
       const access_token = req.oidc.accessToken.access_token
       const token_type = req.oidc.accessToken.token_type
       console.log(req.oidc)
@@ -163,23 +155,6 @@ router.get('/applications/:id/device/:name', requiresAuth(), urlencodedParser, a
         console.log("lulululul", datas)
       } catch(e) { }
 
-      // try {
-      //   const apiResponses = await axios.get(`${host}:5000/devices`, 
-      //   {
-      //   headers: { 
-      //     'Authorization': `${token_type} ${access_token}`, 
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   },
-      //   })
-      //   datasdevices = apiResponses.data
-      //   console.log("lililili", datas)
-      // } catch(e) { }
-
-      // io.once('connection', function (socket) {
-      //   console.log("rs1:", JSON.stringify(datas));
-      //   // console.log(req.params.name)
-      //   socket.emit("widget", datas);
-      // });
 
         res.render('widgets', {
           isAuthenticated: req.oidc.isAuthenticated(),
@@ -226,7 +201,7 @@ router.get('/applications', requiresAuth(), urlencodedParser, async (req, res) =
 
 
 
-router.get('/devices/add-application', requiresAuth(), function (req, res, next) {
+router.get('/applications/add-application', requiresAuth(), function (req, res, next) {
   res.render('addapplication', {
     isAuthenticated: req.oidc.isAuthenticated(),
     user: req.oidc.user
@@ -304,15 +279,38 @@ router.get('/applications/:id/add-device', requiresAuth(), function (req, res, n
   })
 });
 
-router.get('/applications/:appId/devices/:id/set-lora', requiresAuth(), function (req, res, next) {
+router.get('/applications/:id/device/:name/set-lora', requiresAuth(), function (req, res, next) {
 
   const access_token = req.oidc.accessToken.access_token
+  const token_type = req.oidc.accessToken.token_type
 
-  res.render('addlora', {
-    isAuthenticated: req.oidc.isAuthenticated(),
-    user: req.oidc.user,
-    access_token: access_token
-  })
+  var dataLora = qs.stringify({
+    'applicationID': req.params.id,
+    'name': req.params.name,
+    'description': req.params.name
+  });
+console.log("datalora:",dataLora)
+  var configLora = {
+    method: 'post',
+    url: `${host}:5000/api/dev/lora`,
+    headers: { 
+      'Authorization': `${token_type} ${access_token}`, 
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data : dataLora
+  };
+
+  axios(configLora)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+  })    
+  .catch(function (error) {
+    console.log("lilia",error);
+    console.log(error);
+  });
+  // const access_token = req.oidc.accessToken.access_token
+console.log("lalilali")
+  res.redirect('/applications/'+ req.params.id + '/device/' + req.params.name)
 });
 
 router.get('/applications/:id', requiresAuth(), async (req, res) =>{
@@ -382,31 +380,57 @@ router.post('/applications/:id/add-device', requiresAuth(), urlencodedParser, (r
 
 router.post('/applications/add-application', requiresAuth(), urlencodedParser, (req, res) => {
   console.log('Got body:', req.body);
-  var data = qs.stringify({
-    'appId': req.body.appId,
-    'appName': req.body.appName,
-    'userId': req.oidc.user.email, 
-    'userName': req.oidc.user.nickname, 
-    'userEmail': req.oidc.user.email, 
+
+  var dataLora = qs.stringify({
+    'name': req.body.appName.replace(/ /g,"_"),
+    'description': req.body.appName
   });
 
   const access_token = req.oidc.accessToken.access_token
   const token_type = req.oidc.accessToken.token_type
   console.log(access_token)
 
-  var config = {
+
+  var configLora = {
     method: 'post',
-    url: `${host}:5000/applications`,
+    url: `${host}:5000/api/app/lora`,
     headers: { 
       'Authorization': `${token_type} ${access_token}`, 
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    data : data
+    data : dataLora
   };
 
-    axios(config)
+    axios(configLora)
     .then(function (response) {
-      console.log("lala",response);
+
+      var data = qs.stringify({
+        'appId': response.data.id,
+        'appName': req.body.appName,
+        'userId': req.oidc.user.email, 
+        'userName': req.oidc.user.nickname, 
+        'userEmail': req.oidc.user.email, 
+      });
+
+      var config = {
+        method: 'post',
+        url: `${host}:5000/applications`,
+        headers: { 
+          'Authorization': `${token_type} ${access_token}`, 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+      };
+
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })    
+      .catch(function (error) {
+        console.log("lilia",error);
+        console.log(error);
+      });
+      // console.log("lala",response);
       console.log(JSON.stringify(response.data));
     })
     .catch(function (error) {

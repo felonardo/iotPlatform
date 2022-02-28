@@ -33,11 +33,19 @@
           <div class="card-header border-0">
             <div class="row">
               <h2 class="ml-4 col"><%= deviceName %></h2>
+              <!-- <h2 class="ml-4 col"> "data2"<%= data%></h2> -->
               <!-- <button type="button" class="btn btn-primary mr-4" >Set LoraWan</button> -->
-              <a class="btn btn-warning mr-4" href="/applications/<%= appId %>/devices/<%= deviceName %>/set-lora">
+              <% if (data == false) { %>
+              <a class="btn btn-warning mr-4" href="/applications/<%= appId %>/device/<%= deviceName %>/set-lora">
                 <i class="fas fa-wifi text-white"></i>
                 <span class="nav-link-text">Set LoraWAN</span>
               </a>
+              <%} else { %>
+                <a class="btn btn-warning mr-4" href="/applications/<%= appId %>/device/<%= deviceName %>/unset-lora">
+                  <i class="fas fa-wifi text-white"></i>
+                  <span class="nav-link-text">Unset LoraWAN</span>
+                </a>
+              <%}%>
             </div>
 
           </div>
